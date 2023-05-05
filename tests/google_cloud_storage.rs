@@ -13,9 +13,7 @@ async fn upload_works_properly() {
     let bucket = "fn-push-testing".to_string();
     let config = ClientConfig::default().with_auth().await;
     let client: Client = match config {
-        Ok(c) => {
-            Client::new(c)
-        }
+        Ok(c) => Client::new(c),
         Err(e) => {
             println!("Error: {}", e);
             panic!();
