@@ -11,8 +11,17 @@ use push_fns::upload::google_cloud_storage::cs_upload;
 async fn upload_works_properly() {
     let file_name = "src/upload/google_cloud_storage.rs";
     let bucket = "fn-push-testing".to_string();
-    let config = ClientConfig::default().with_auth().await.unwrap();
-    let client = Client::new(config);
+    let config = ClientConfig::default().with_auth().await;
+    let mut client : Client;
+    match config {
+        Ok(c) => {
+            client = Client::new(c);
+        }
+        Err(e) => {
+            println!("Error: {}", e);
+            panic!();
+        }
+    }
 
     // Read the same file in directly for an expected value
     let mut file = File::open(file_name).unwrap();
