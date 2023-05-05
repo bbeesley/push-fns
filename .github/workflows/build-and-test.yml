@@ -81,6 +81,8 @@ jobs:
           token_format: "access_token"
           workload_identity_provider: "projects/667354156589/locations/global/workloadIdentityPools/cicd/providers/github"
           service_account: storage-writer@bbeesley-iam.iam.gserviceaccount.com
+      - name: gcloud sdk
+        uses: google-github-actions/setup-gcloud@v1
       - name: run cargo test
         uses: actions-rs/cargo@v1
         with:
