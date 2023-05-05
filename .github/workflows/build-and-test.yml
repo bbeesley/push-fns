@@ -91,6 +91,9 @@ jobs:
           service_account: storage-writer@bbeesley-iam.iam.gserviceaccount.com
       - name: gcloud sdk
         uses: google-github-actions/setup-gcloud@v1
+      - name: adc login
+        run: |
+          gcloud auth application-default login
       - name: run cargo test
         uses: actions-rs/cargo@v1
         with:
