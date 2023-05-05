@@ -87,16 +87,10 @@ jobs:
       - name: gcp
         uses: google-github-actions/auth@v1
         with:
-          token_format: "id_token"
-          workload_identity_provider: "projects/667354156589/locations/global/workloadIdentityPools/cicd/providers/github"
-          service_account: storage-writer@bbeesley-iam.iam.gserviceaccount.com
-          id_token_audience: https://storage.googleapis.com
+          credentials_json: ${{ secrets.STORAGE_CREDENTIALS }}
       - name: run cargo test
         shell: bash
-        run: |
-          export GOOGLE_APPLICATION_CREDENTIALS_JSON=$(cat ${GOOGLE_APPLICATION_CREDENTIALS})
-          echo ${GOOGLE_APPLICATION_CREDENTIALS_JSON}
-          cargo test
+        run: cargo test
   tests-complete:
     runs-on: ubuntu-latest
     needs: [test, lint, check]
