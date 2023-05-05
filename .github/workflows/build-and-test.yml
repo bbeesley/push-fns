@@ -23,6 +23,7 @@ jobs:
           toolchain: stable
           override: true
       - uses: swatinem/rust-cache@v2
+        name: setup cache
       - name: run cargo check
         uses: actions-rs/cargo@v1
         with:
@@ -42,6 +43,7 @@ jobs:
           override: true
           components: rustfmt, clippy
       - uses: swatinem/rust-cache@v2
+        name: setup cache
       - name: run cargo fmt
         uses: actions-rs/cargo@v1
         with:
@@ -73,6 +75,7 @@ jobs:
           toolchain: stable
           override: true
       - uses: swatinem/rust-cache@v2
+        name: setup cache
       - name: aws
         uses: aws-actions/configure-aws-credentials@v2
         with:
