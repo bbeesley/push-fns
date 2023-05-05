@@ -1,4 +1,3 @@
-
 use std::{fs::File, io::Read};
 
 use aws_sdk_s3::{config::Region, Client};

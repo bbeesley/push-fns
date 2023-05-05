@@ -1,4 +1,3 @@
-
 use std::{fs::File, io::Read};
 
 use google_cloud_default::WithAuthExt;

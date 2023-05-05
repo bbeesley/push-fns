@@ -17,11 +17,8 @@ fn fill_zip(files: &HashSet<String>, archive: &mut Cursor<Vec<u8>>, base: PathBu
         }
         let contents = fs::read(full_path).unwrap();
         let options = FileOptions::default();
-        zip.start_file(
-            file_path.to_str().unwrap(),
-            options,
-        )
-        .unwrap();
+        zip.start_file(file_path.to_str().unwrap(), options)
+            .unwrap();
         zip.write_all(&contents).unwrap();
     });
     zip.finish().unwrap();

@@ -1,4 +1,3 @@
-
 use push_fns::search::{get_files_for_glob, search};
 
 #[test]

@@ -1,5 +1,8 @@
 use clap::{Parser, Subcommand};
-use push_fns::{aws::{push_aws, AWSArgs}, gcp::{push_gcs, GCPArgs}};
+use push_fns::{
+    aws::{push_aws, AWSArgs},
+    gcp::{push_gcs, GCPArgs},
+};
 
 /// A simple tool to upload serverless function assets
 #[derive(Parser)]
