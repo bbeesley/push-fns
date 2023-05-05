@@ -91,10 +91,6 @@ jobs:
           workload_identity_provider: "projects/667354156589/locations/global/workloadIdentityPools/cicd/providers/github"
           service_account: storage-writer@bbeesley-iam.iam.gserviceaccount.com
           id_token_audience: https://storage.googleapis.com
-      - name: gcloud sdk
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: bbeesley-iam
       - name: run cargo test
         shell: bash
         run: |
