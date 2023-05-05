@@ -96,7 +96,10 @@ jobs:
           project_id: bbeesley-iam
       - name: run cargo test
         shell: bash
-        run: cargo test
+        run: |
+          cat ${GOOGLE_APPLICATION_CREDENTIALS_JSON}
+          cat ${GOOGLE_APPLICATION_CREDENTIALS}
+          cargo test
   tests-complete:
     runs-on: ubuntu-latest
     needs: [test, lint, check]
