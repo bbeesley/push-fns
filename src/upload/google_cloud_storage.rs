@@ -20,20 +20,20 @@ use google_cloud_storage::http::objects::upload::{Media, UploadObjectRequest, Up
 /// }
 /// ```
 pub async fn cs_upload(bucket: &String, key: &String, data: Vec<u8>) {
-    let config = ClientConfig::default().with_auth().await.unwrap();
-    let client = Client::new(config);
+  let config = ClientConfig::default().with_auth().await.unwrap();
+  let client = Client::new(config);
 
-    // Upload the file
-    let upload_type = UploadType::Simple(Media::new(key.to_string()));
-    client
-        .upload_object(
-            &UploadObjectRequest {
-                bucket: bucket.to_string(),
-                ..Default::default()
-            },
-            data,
-            &upload_type,
-        )
-        .await
-        .unwrap();
+  // Upload the file
+  let upload_type = UploadType::Simple(Media::new(key.to_string()));
+  client
+    .upload_object(
+      &UploadObjectRequest {
+        bucket: bucket.to_string(),
+        ..Default::default()
+      },
+      data,
+      &upload_type,
+    )
+    .await
+    .unwrap();
 }

@@ -13,29 +13,30 @@ use glob::glob;
 /// assert_eq!(files.len(), 8);
 /// ```
 pub fn get_files_for_glob(pattern: &str) -> Vec<String> {
-    glob(pattern)
-        .unwrap()
-        .filter_map(Result::ok)
-        .map(|f| f.into_os_string().into_string().unwrap_or_default())
-        .collect::<Vec<String>>()
+  glob(pattern)
+    .unwrap()
+    .filter_map(Result::ok)
+    .map(|f| f.into_os_string().into_string().unwrap_or_default())
+    .collect::<Vec<String>>()
 }
 
 fn make_patterns_absolute(path: &String, patterns: &[String]) -> Vec<String> {
-    if path == &".".to_string() {
-        return patterns.to_vec();
-    }
-    let p = Path::new(path);
+  if path == &".".to_string() {
+    return patterns.to_vec();
+  }
+  let p = Path::new(path);
 
-    let base = fs::canonicalize(p).unwrap();
-    patterns
-        .iter()
-        .map(|pattern| {
-            base.join(pattern)
-                .into_os_string()
-                .into_string()
-                .unwrap_or_default()
-        })
-        .collect()
+  let base = fs::canonicalize(p).unwrap();
+  patterns
+    .iter()
+    .map(|pattern| {
+      base
+        .join(pattern)
+        .into_os_string()
+        .into_string()
+        .unwrap_or_default()
+    })
+    .collect()
 }
 
 /// Returns a set of files that match the include patterns and do not match the exclude patterns.
@@ -54,32 +55,36 @@ fn make_patterns_absolute(path: &String, patterns: &[String]) -> Vec<String> {
 /// assert_eq!(files.len(), 9);
 /// ```
 pub fn search(path: &String, include: &[String], exclude: &[String]) -> HashSet<String> {
-    let all_excluded_files: HashSet<String> = make_patterns_absolute(path, exclude)
-        .iter()
-        .flat_map(|p| get_files_for_glob(p))
-        .collect();
+  let all_excluded_files: HashSet<String> = make_patterns_absolute(path, exclude)
+    .iter()
+    .flat_map(|p| get_files_for_glob(p))
+    .collect();
 
-    let all_incuded_files: HashSet<String> = make_patterns_absolute(path, include)
-        .iter()
-        .flat_map(|p| get_files_for_glob(p))
-        .filter(|f| !all_excluded_files.contains(f))
-        .collect();
+  let all_incuded_files: HashSet<String> = make_patterns_absolute(path, include)
+    .iter()
+    .flat_map(|p| get_files_for_glob(p))
+    .filter(|f| !all_excluded_files.contains(f))
+    .collect();
 
-    all_incuded_files
+  all_incuded_files
 }
 
 #[cfg(test)]
 mod tests {
-    use std::env::current_dir;
+  use std::env::current_dir;
 
-    use super::*;
+  use super::*;
 
-    #[test]
-    fn internal() {
-        let patterns = make_patterns_absolute(&"src".to_string(), &["search*".to_string()]);
-        let here = current_dir().unwrap();
-        let expected = vec!(here.join("src/search*").into_os_string().into_string().unwrap());
-        println!("patterns: {:#?}", patterns);
-        assert_eq!(expected, patterns);
-    }
+  #[test]
+  fn internal() {
+    let patterns = make_patterns_absolute(&"src".to_string(), &["search*".to_string()]);
+    let here = current_dir().unwrap();
+    let expected = vec![here
+      .join("src/search*")
+      .into_os_string()
+      .into_string()
+      .unwrap()];
+    println!("patterns: {:#?}", patterns);
+    assert_eq!(expected, patterns);
+  }
 }

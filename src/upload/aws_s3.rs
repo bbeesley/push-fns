@@ -20,16 +20,16 @@ use aws_sdk_s3::{config::Region, Client};
 /// }
 /// ```
 pub async fn s3_upload(region: &String, bucket: &String, key: &String, data: Vec<u8>) {
-    let region_provider = Region::new(region.to_owned());
-    let shared_config = aws_config::from_env().region(region_provider).load().await;
-    let client = Client::new(&shared_config);
-    let body = ByteStream::from(data);
-    client
-        .put_object()
-        .bucket(bucket)
-        .key(key)
-        .body(body)
-        .send()
-        .await
-        .unwrap();
+  let region_provider = Region::new(region.to_owned());
+  let shared_config = aws_config::from_env().region(region_provider).load().await;
+  let client = Client::new(&shared_config);
+  let body = ByteStream::from(data);
+  client
+    .put_object()
+    .bucket(bucket)
+    .key(key)
+    .body(body)
+    .send()
+    .await
+    .unwrap();
 }
