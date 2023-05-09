@@ -67,3 +67,19 @@ pub fn search(path: &String, include: &[String], exclude: &[String]) -> HashSet<
 
     all_incuded_files
 }
+
+#[cfg(test)]
+mod tests {
+    use std::env::current_dir;
+
+    use super::*;
+
+    #[test]
+    fn internal() {
+        let patterns = make_patterns_absolute(&"src".to_string(), &["search*".to_string()]);
+        let here = current_dir().unwrap();
+        let expected = vec!(here.join("src/search*").into_os_string().into_string().unwrap());
+        println!("patterns: {:#?}", patterns);
+        assert_eq!(expected, patterns);
+    }
+}

@@ -1,3 +1,5 @@
+use std::env;
+
 use push_fns::search::{get_files_for_glob, search};
 
 #[test]
@@ -10,7 +12,11 @@ fn test_get_files_for_glob() {
 fn search_works_with_different_paths() {
     let files = search(&"src".to_string(), &["*".to_string()], &[]);
     assert_eq!(files.len(), 8);
-    let files = search(&".".to_string(), &["src/*".to_string()], &[]);
+    let include = match env::consts::OS {
+        "windows" => "src\\*",
+        _ => "src/*",
+    };
+    let files = search(&".".to_string(), &[include.to_string()], &[]);
     assert_eq!(files.len(), 8);
 }
 
