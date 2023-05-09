@@ -76,15 +76,25 @@ mod tests {
   use super::*;
 
   #[test]
-  fn internal() {
+  fn test_absolute_patterns() {
     let patterns = make_patterns_absolute(&"src".to_string(), &["search*".to_string()]);
     let here = current_dir().unwrap();
     let expected = vec![here
-      .join("src/search*")
+      .join("src")
+      .join("search*")
       .into_os_string()
       .into_string()
       .unwrap()];
     println!("patterns: {:#?}", patterns);
     assert_eq!(expected, patterns);
+  }
+
+  #[test]
+  fn test_canonical_path() {
+    let here = current_dir().unwrap();
+    let canonical_path = fs::canonicalize(&here).unwrap();
+    println!("here: {:#?}", here);
+    println!("canonical: {:#?}", canonical_path);
+    assert_eq!(here, canonical_path);
   }
 }
