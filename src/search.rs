@@ -1,4 +1,4 @@
-use std::{collections::HashSet, fs, path::Path};
+use std::{collections::HashSet, env::current_dir};
 
 use glob::glob;
 
@@ -24,9 +24,7 @@ fn make_patterns_absolute(path: &String, patterns: &[String]) -> Vec<String> {
   if path == &".".to_string() {
     return patterns.to_vec();
   }
-  let p = Path::new(path);
-
-  let base = fs::canonicalize(p).unwrap();
+  let base = current_dir().unwrap().join(path);
   patterns
     .iter()
     .map(|pattern| {
@@ -87,14 +85,5 @@ mod tests {
       .unwrap()];
     println!("patterns: {:#?}", patterns);
     assert_eq!(expected, patterns);
-  }
-
-  #[test]
-  fn test_canonical_path() {
-    let here = current_dir().unwrap();
-    let canonical_path = fs::canonicalize(&here).unwrap();
-    println!("here: {:#?}", here);
-    println!("canonical: {:#?}", canonical_path);
-    assert_eq!(here, canonical_path);
   }
 }
