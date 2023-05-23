@@ -73,6 +73,8 @@ mod tests {
 
   use super::*;
 
+  const NUM_FILES: usize = 7;
+
   #[test]
   fn test_absolute_patterns() {
     let patterns = make_patterns_absolute(&"src".to_string(), &["search*".to_string()]);
@@ -90,19 +92,19 @@ mod tests {
   #[test]
   fn test_get_files_for_glob() {
     let files = get_files_for_glob("src/*");
-    assert_eq!(files.len(), 9);
+    assert_eq!(files.len(), NUM_FILES + 1);
   }
 
   #[test]
   fn search_works_with_different_paths() {
     let files = search(&"src".to_string(), &["*".to_string()], &[]);
-    assert_eq!(files.len(), 9);
+    assert_eq!(files.len(), NUM_FILES + 1);
     let include = match env::consts::OS {
       "windows" => "src\\*",
       _ => "src/*",
     };
     let files = search(&".".to_string(), &[include.to_string()], &[]);
-    assert_eq!(files.len(), 9);
+    assert_eq!(files.len(), NUM_FILES + 1);
   }
 
   #[test]
@@ -112,7 +114,7 @@ mod tests {
       &["*".to_string()],
       &["search*".to_string()],
     );
-    assert_eq!(files.len(), 8);
+    assert_eq!(files.len(), NUM_FILES);
   }
 
   #[test]
@@ -122,7 +124,7 @@ mod tests {
       &["*".to_string()],
       &["search*".to_string(), "zip*".to_string()],
     );
-    assert_eq!(files.len(), 7);
+    assert_eq!(files.len(), NUM_FILES - 1);
   }
 
   #[test]
@@ -133,6 +135,6 @@ mod tests {
       &[],
     );
     println!("files: {:#?}", files);
-    assert_eq!(files.len(), 10);
+    assert_eq!(files.len(), NUM_FILES + 2);
   }
 }
