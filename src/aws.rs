@@ -74,13 +74,14 @@ mod tests {
 
   use super::*;
   use std::{
+    env,
     fs::File,
-    io::{self, Cursor, Read}, env,
+    io::{self, Cursor, Read},
   };
 
   fn get_file_path(name: &str) -> String {
     match env::consts::OS {
-      "windows" =>  format!("src\\{}", name),
+      "windows" => format!("src\\{}", name),
       _ => format!("src/{}", name),
     }
   }

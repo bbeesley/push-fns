@@ -48,13 +48,14 @@ mod tests {
 
   use super::*;
   use std::{
+    env,
     fs::File,
-    io::{self, Cursor, Read}, env,
+    io::{self, Cursor, Read},
   };
 
   fn get_file_path() -> String {
     let path = match env::consts::OS {
-      "windows" =>  "src\\gcp.rs",
+      "windows" => "src\\gcp.rs",
       _ => "src/gcp.rs",
     };
     path.to_string()
