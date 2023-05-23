@@ -49,8 +49,16 @@ mod tests {
   use super::*;
   use std::{
     fs::File,
-    io::{self, Cursor, Read},
+    io::{self, Cursor, Read}, env,
   };
+
+  fn get_file_path() -> String {
+    let path = match env::consts::OS {
+      "windows" =>  "src\\gcp.rs",
+      _ => "src/gcp.rs",
+    };
+    path.to_string()
+  }
 
   fn generate_random_string(length: usize) -> String {
     let mut rng = rand::thread_rng();
@@ -70,7 +78,7 @@ mod tests {
     let args = GCPArgs {
       buckets: vec!["fn-push-testing".to_string()],
       function_key: "gcp-test".to_string(),
-      include: vec!["src/gcp.rs".to_string()],
+      include: vec![get_file_path()],
       exclude: vec![],
       input_path: ".".to_string(),
       version_suffix: Some(random_string.clone()),
@@ -132,7 +140,7 @@ mod tests {
     let args = GCPArgs {
       buckets: vec!["fn-push-testing".to_string()],
       function_key: function_key.clone(),
-      include: vec!["src/gcp.rs".to_string()],
+      include: vec![get_file_path()],
       exclude: vec![],
       input_path: ".".to_string(),
       version_suffix: None,

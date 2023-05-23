@@ -75,8 +75,15 @@ mod tests {
   use super::*;
   use std::{
     fs::File,
-    io::{self, Cursor, Read},
+    io::{self, Cursor, Read}, env,
   };
+
+  fn get_file_path(name: &str) -> String {
+    match env::consts::OS {
+      "windows" =>  format!("src\\{}", name),
+      _ => format!("src/{}", name),
+    }
+  }
 
   fn generate_random_string(length: usize) -> String {
     let mut rng = rand::thread_rng();
@@ -98,7 +105,7 @@ mod tests {
       regions: vec!["eu-west-2".to_string()],
       buckets: vec!["fn-push-testing".to_string()],
       function_key: "aws-test".to_string(),
-      include: vec!["src/aws.rs".to_string()],
+      include: vec![get_file_path("aws.rs")],
       exclude: vec![],
       input_path: ".".to_string(),
       layer_key: None,
@@ -161,7 +168,7 @@ mod tests {
       regions: vec!["eu-west-2".to_string()],
       buckets: vec!["fn-push-testing".to_string()],
       function_key: function_key.clone(),
-      include: vec!["src/aws.rs".to_string()],
+      include: vec![get_file_path("aws.rs")],
       exclude: vec![],
       input_path: ".".to_string(),
       layer_key: None,
@@ -224,11 +231,11 @@ mod tests {
       regions: vec!["eu-west-2".to_string()],
       buckets: vec!["fn-push-testing".to_string()],
       function_key: "aws-test".to_string(),
-      include: vec!["src/*.rs".to_string()],
+      include: vec![get_file_path("*.rs")],
       exclude: vec![],
       input_path: ".".to_string(),
       layer_key: Some("aws-layer".to_string()),
-      layer_globs: vec!["src/aws.rs".to_string()],
+      layer_globs: vec![get_file_path("aws.rs")],
       version_suffix: Some(random_string.clone()),
       root_dir: None,
       symlink_node_modules: false,
