@@ -1,0 +1,22 @@
+{
+  "name": "push-fns",
+  "version": "0.0.0-development",
+  "description": "A simple library for packaging up serverless function code and uploading to a bucket for use in lambda or cloud functions",
+  "scripts": {
+    "test": "cargo test",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bbeesley/push-fns.git"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.7",
+    "@semantic-release/release-notes-generator": "^11.0.1",
+    "semantic-release": "^21.0.2",
+    "semantic-release-cargo": "^2.2.4"
+  }
+}
