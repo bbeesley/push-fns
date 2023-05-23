@@ -3,14 +3,13 @@ name = "push-fns"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-
-[lib]
-name = "push_fns"
-path = "src/lib.rs"
-
-[[bin]]
-name = "push-fns"
-path = "src/main.rs"
+description = "A simple tool to upload serverless function assets"
+readme = "README.md"
+keywords = ["cli", "aws", "gcp", "lambda", "zip"]
+categories = ["command-line-utilities"]
+build = "build.rs"
+homepage = "https://github.com/bbeesley/push-fns"
+repository = "https://github.com/bbeesley/push-fns"
 
 [dependencies]
 aws-config = "0.55.1"
@@ -27,3 +26,12 @@ google-cloud-storage = { version = "0.11.0", features = [
 ] }
 tokio = { version = "1.28.0", features = ["full"] }
 zip = "0.6.4"
+
+[dev-dependencies]
+rand = "0.8.5"
+
+[build-dependencies]
+clap = { version = "4.2.5", features = ["derive"] }
+clap_builder = "4.3.0"
+clap_complete = "4.3.0"
+clap_mangen = "0.2.11"

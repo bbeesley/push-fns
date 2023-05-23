@@ -1,31 +1,31 @@
-use clap::{Parser, Subcommand};
-use push_fns::{
-  aws::{push_aws, AWSArgs},
-  gcp::{push_gcs, GCPArgs},
-};
+#![doc = include_str!("../README.md")]
+#![deny(missing_docs)]
+#![doc(issue_tracker_base_url = "https://github.com/bbeesley/push-fns/issues/")]
 
-/// A simple tool to upload serverless function assets
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-#[command(propagate_version = true)]
-struct Cli {
-  #[command(subcommand)]
-  command: Commands,
-}
+/// The CLI arguments
+pub mod args;
 
-#[derive(Subcommand)]
-enum Commands {
-  /// Zips up function assets and uploads them to AWS S3 for use in lambda functions.
-  /// Optionally creates a file for a layer as well as a file for the function itself.
-  Aws(AWSArgs),
+/// Functions for uploading to AWS S3
+pub mod aws;
+/// Functions for uploading to GCP Cloud Storage
+pub mod gcp;
+/// Functions for searching the filesystem based on include and exclude globs
+pub mod search;
+/// Generic upload functions for S3 and GCS
+pub mod upload;
+/// Functions for adding a list of files to a zip archive
+pub mod zip;
 
-  /// Zips up function assets and uploads them to Google Cloud Storage for use in Cloud Functions.
-  Gcp(GCPArgs),
-}
+use aws::push_aws;
+use clap::Parser;
+use gcp::push_gcs;
 
+use crate::args::{Cli, Commands};
+
+/// The entrypoint for the CLI - parses the CLI args and calls the appropriate function
 #[tokio::main]
 async fn main() {
-  let cli = Cli::parse();
+  let cli = args::Cli::parse();
   match cli {
     Cli {
       command: Commands::Aws(args),

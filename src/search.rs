@@ -7,7 +7,7 @@ use glob::glob;
 /// # Examples
 ///
 /// ```
-/// use push_fns::search::get_files_for_glob;
+/// use push_fn_lib::search::get_files_for_glob;
 ///
 /// let files = get_files_for_glob("src/*");
 /// assert_eq!(files.len(), 8);
@@ -42,7 +42,7 @@ fn make_patterns_absolute(path: &String, patterns: &[String]) -> Vec<String> {
 /// # Examples
 ///
 /// ```
-/// use push_fns::search::search;
+/// use push_fn_lib::search::search;
 ///
 /// let files = search(
 ///     &".".to_string(),
@@ -69,7 +69,7 @@ pub fn search(path: &String, include: &[String], exclude: &[String]) -> HashSet<
 
 #[cfg(test)]
 mod tests {
-  use std::env::current_dir;
+  use std::env;
 
   use super::*;
 
@@ -85,5 +85,54 @@ mod tests {
       .unwrap()];
     println!("patterns: {:#?}", patterns);
     assert_eq!(expected, patterns);
+  }
+
+  #[test]
+  fn test_get_files_for_glob() {
+    let files = get_files_for_glob("src/*");
+    assert_eq!(files.len(), 9);
+  }
+
+  #[test]
+  fn search_works_with_different_paths() {
+    let files = search(&"src".to_string(), &["*".to_string()], &[]);
+    assert_eq!(files.len(), 9);
+    let include = match env::consts::OS {
+      "windows" => "src\\*",
+      _ => "src/*",
+    };
+    let files = search(&".".to_string(), &[include.to_string()], &[]);
+    assert_eq!(files.len(), 9);
+  }
+
+  #[test]
+  fn search_works_with_single_exclude() {
+    let files = search(
+      &"src".to_string(),
+      &["*".to_string()],
+      &["search*".to_string()],
+    );
+    assert_eq!(files.len(), 8);
+  }
+
+  #[test]
+  fn search_works_with_multiple_excludes() {
+    let files = search(
+      &"src".to_string(),
+      &["*".to_string()],
+      &["search*".to_string(), "zip*".to_string()],
+    );
+    assert_eq!(files.len(), 7);
+  }
+
+  #[test]
+  fn search_works_with_multiple_includes() {
+    let files = search(
+      &".".to_string(),
+      &["src/*".to_string(), ".devcontainer/*".to_string()],
+      &[],
+    );
+    println!("files: {:#?}", files);
+    assert_eq!(files.len(), 10);
   }
 }
