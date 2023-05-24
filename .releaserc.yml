@@ -4,6 +4,11 @@ plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
   - "@semantic-release/changelog"
+  - - "semantic-release-cargo"
+    - "allFeatures": true
+      "check": true
+      "checkArgs": []
+      "publishArgs": []
   - "@semantic-release/github"
   - - "@semantic-release/git"
     - "assets":
@@ -12,9 +17,3 @@ plugins:
         - "README.md"
         - "Cargo.toml"
       "message": "chore(release): ${nextRelease.version} 🚀 [skip ci]\n\n${nextRelease.notes}"
-  - - "semantic-release-cargo"
-    - "allFeatures": true
-      "check": true
-      "checkArgs": []
-      "publishArgs": []
-      
