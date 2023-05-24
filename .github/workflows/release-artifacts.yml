@@ -1,5 +1,17 @@
 name: Build Release Binaries
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The tag to release under"
+        required: false
+        type: string
+        default: ""
+      name:
+        description: "The name of the release"
+        required: false
+        type: string
+        default: ""
   release:
     types: [created]
 
@@ -13,69 +25,71 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - target: x86_64-unknown-linux-musl
-          os: ubuntu-latest
-          cross: true
-        - target: aarch64-unknown-linux-musl
-          os: ubuntu-latest
-          cross: true
-        - target: armv7-unknown-linux-musleabi
-          os: ubuntu-latest
-          cross: true
-        - target: riscv64gc-unknown-linux-gnu
-          os: ubuntu-latest
-          cross: true
-        - target: x86_64-apple-darwin
-          os: macos-latest
-          cross: false
-        - target: aarch64-apple-darwin
-          os: macos-latest
-          cross: false
-        - target: x86_64-pc-windows-msvc
-          os: windows-latest
-          cross: false
-        - target: aarch64-pc-windows-msvc
-          os: windows-latest
-          cross: true
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            cross: true
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+            cross: true
+          - target: armv7-unknown-linux-musleabi
+            os: ubuntu-latest
+            cross: true
+          - target: riscv64gc-unknown-linux-gnu
+            os: ubuntu-latest
+            cross: true
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            cross: false
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            cross: false
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            cross: false
+          - target: aarch64-pc-windows-msvc
+            os: windows-latest
+            cross: true
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: dtolnay/rust-toolchain@stable
-      with:
-        target: ${{ matrix.target }}
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          target: ${{ matrix.target }}
 
-    - name: Run Cross
-      if: ${{ matrix.cross}}
-      run: |
-        cargo install cross --git https://github.com/cross-rs/cross.git
-        cross build -p push-fns --release --target ${{ matrix.target }}
+      - name: Run Cross
+        if: ${{ matrix.cross}}
+        run: |
+          cargo install cross --git https://github.com/cross-rs/cross.git
+          cross build -p push-fns --release --target ${{ matrix.target }}
 
-    - name: Run Cargo
-      if: ${{ !matrix.cross }}
-      run: cargo build -p push-fns --release --target ${{ matrix.target }}
+      - name: Run Cargo
+        if: ${{ !matrix.cross }}
+        run: cargo build -p push-fns --release --target ${{ matrix.target }}
 
-    - name: create artifact directory
-      shell: bash
-      run: |
-        directory=push-fns-${{ matrix.target }}
-        mkdir $directory
-        # misc
-        cp README.md LICENSE $directory
-        # man page
-        mkdir -p $directory/man
-        mv target/${{ matrix.target }}/release/build/push-fns*/out/push-fns.1 $directory/man/
-        # completion
-        mkdir -p $directory/completion
-        cp target/${{ matrix.target }}/release/build/push-fns*/out/*${NAME}* build/completion/
-        if [ -f target/${{ matrix.target }}/release/push-fns.exe ]; then
-          cp target/${{ matrix.target }}/release/push-fns.exe $directory
-          7z a -r $directory.zip $directory
-        else
-          cp target/${{ matrix.target }}/release/push-fns $directory
-          tar cJf $directory.tar.xz $directory
-        fi
+      - name: create artifact directory
+        shell: bash
+        run: |
+          directory=push-fns-${{ matrix.target }}
+          mkdir $directory
+          # misc
+          cp README.md LICENSE $directory
+          # man page
+          mkdir -p $directory/man
+          mv target/${{ matrix.target }}/release/build/push-fns*/out/push-fns.1 $directory/man/
+          # completion
+          mkdir -p $directory/completion
+          cp target/${{ matrix.target }}/release/build/push-fns*/out/*${NAME}* build/completion/
+          if [ -f target/${{ matrix.target }}/release/push-fns.exe ]; then
+            cp target/${{ matrix.target }}/release/push-fns.exe $directory
+            7z a -r $directory.zip $directory
+          else
+            cp target/${{ matrix.target }}/release/push-fns $directory
+            tar cJf $directory.tar.xz $directory
+          fi
 
-    - uses: ncipollo/release-action@v1
-      with:
-        artifacts: "push-fns-${{ matrix.target }}.*"
-        allowUpdates: true
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "push-fns-${{ matrix.target }}.*"
+          allowUpdates: true
+          tag: ${{ inputs.tag }}
+          name: ${{ inputs.name || inputs.tag }}
