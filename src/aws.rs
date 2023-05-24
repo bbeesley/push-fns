@@ -116,7 +116,6 @@ mod tests {
       symlink_node_modules: false,
     };
     push_aws(args).await;
-    let file_name = "src/aws.rs";
     let object_name = format!("aws-test-{}.zip", random_string);
     println!("object_name: {}", object_name);
     let region = "eu-west-2".to_string();
@@ -145,13 +144,13 @@ mod tests {
     let mut zip = ZipArchive::new(Cursor::new(zip_object)).unwrap();
 
     // Extract the file from the archive
-    let mut file_entry = zip.by_name(file_name).unwrap();
+    let mut file_entry = zip.by_name(get_file_path("aws.rs").as_str()).unwrap();
 
     // Copy it to the buffer
     io::copy(&mut file_entry, &mut content_buf).unwrap();
 
     // Read the same file in directly for an expected value
-    let mut file = File::open(file_name).unwrap();
+    let mut file = File::open(get_file_path("aws.rs").as_str()).unwrap();
 
     // We'll store it in this buffer
     let mut file_buf = Vec::new();
@@ -179,7 +178,6 @@ mod tests {
       symlink_node_modules: false,
     };
     push_aws(args).await;
-    let file_name = "src/aws.rs";
     let object_name = format!("{}.zip", function_key);
     println!("object_name: {}", object_name);
     let region = "eu-west-2".to_string();
@@ -208,13 +206,13 @@ mod tests {
     let mut zip = ZipArchive::new(Cursor::new(zip_object)).unwrap();
 
     // Extract the file from the archive
-    let mut file_entry = zip.by_name(file_name).unwrap();
+    let mut file_entry = zip.by_name(get_file_path("aws.rs").as_str()).unwrap();
 
     // Copy it to the buffer
     io::copy(&mut file_entry, &mut content_buf).unwrap();
 
     // Read the same file in directly for an expected value
-    let mut file = File::open(file_name).unwrap();
+    let mut file = File::open(get_file_path("aws.rs").as_str()).unwrap();
 
     // We'll store it in this buffer
     let mut file_buf = Vec::new();
@@ -242,7 +240,6 @@ mod tests {
       symlink_node_modules: false,
     };
     push_aws(args).await;
-    let file_name = "src/aws.rs";
     let fn_object_name = format!("aws-test-{}.zip", random_string);
     let layer_object_name = format!("aws-layer-{}.zip", random_string);
     println!("object_name: {}", fn_object_name);
@@ -285,13 +282,13 @@ mod tests {
     let mut layer_zip = ZipArchive::new(Cursor::new(layer_zip_object)).unwrap();
 
     // Extract the file from the archive
-    let mut file_entry = layer_zip.by_name(file_name).unwrap();
+    let mut file_entry = layer_zip.by_name(get_file_path("aws.rs").as_str()).unwrap();
 
     // Copy it to the buffer
     io::copy(&mut file_entry, &mut layer_content_buf).unwrap();
 
     // Read the same file in directly for an expected value
-    let mut file = File::open(file_name).unwrap();
+    let mut file = File::open(get_file_path("aws.rs").as_str()).unwrap();
 
     // We'll store it in this buffer
     let mut file_buf = Vec::new();
@@ -304,7 +301,7 @@ mod tests {
     let mut fn_zip = ZipArchive::new(Cursor::new(fn_zip_object)).unwrap();
 
     // Extract the file from the archive
-    let fn_file_entry = fn_zip.by_name(file_name);
+    let fn_file_entry = fn_zip.by_name(get_file_path("aws.rs").as_str());
 
     assert!(fn_file_entry.is_err());
   }

@@ -86,7 +86,6 @@ mod tests {
       root_dir: None,
     };
     push_gcs(args).await;
-    let file_name = "src/gcp.rs";
     let object = format!("gcp-test-{}.zip", random_string);
     println!("object_name: {}", object);
     let bucket = "fn-push-testing".to_string();
@@ -118,13 +117,13 @@ mod tests {
     let mut zip = ZipArchive::new(Cursor::new(zip_object)).unwrap();
 
     // Extract the file from the archive
-    let mut file_entry = zip.by_name(file_name).unwrap();
+    let mut file_entry = zip.by_name(get_file_path().as_str()).unwrap();
 
     // Copy it to the buffer
     io::copy(&mut file_entry, &mut content_buf).unwrap();
 
     // Read the same file in directly for an expected value
-    let mut file = File::open(file_name).unwrap();
+    let mut file = File::open(get_file_path().as_str()).unwrap();
 
     // We'll store it in this buffer
     let mut file_buf = Vec::new();
@@ -148,7 +147,6 @@ mod tests {
       root_dir: None,
     };
     push_gcs(args).await;
-    let file_name = "src/gcp.rs";
     let object = format!("{}.zip", function_key);
     println!("object_name: {}", object);
     let bucket = "fn-push-testing".to_string();
@@ -180,13 +178,13 @@ mod tests {
     let mut zip = ZipArchive::new(Cursor::new(zip_object)).unwrap();
 
     // Extract the file from the archive
-    let mut file_entry = zip.by_name(file_name).unwrap();
+    let mut file_entry = zip.by_name(get_file_path().as_str()).unwrap();
 
     // Copy it to the buffer
     io::copy(&mut file_entry, &mut content_buf).unwrap();
 
     // Read the same file in directly for an expected value
-    let mut file = File::open(file_name).unwrap();
+    let mut file = File::open(get_file_path().as_str()).unwrap();
 
     // We'll store it in this buffer
     let mut file_buf = Vec::new();
