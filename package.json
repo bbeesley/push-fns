@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bbeesley/bbeesley/push-fns.git"
+    "url": "git+https://github.com/bbeesley/push-fns.git"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
