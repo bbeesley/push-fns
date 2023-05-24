@@ -69,6 +69,8 @@ jobs:
         if: ${{ matrix.cross}}
         run: |
           cargo install cross --git https://github.com/cross-rs/cross.git
+          cargo add --features vendored openssl-sys
+          cargo add --features vendored openssl
           cross build -p push-fns --release --target ${{ matrix.target }}
 
       - name: Run Cargo
