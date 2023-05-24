@@ -52,9 +52,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
+      - name: install stable toolchain
+        uses: actions-rs/toolchain@v1
         with:
+          profile: minimal
+          toolchain: stable
+          override: true
           target: ${{ matrix.target }}
+      - uses: swatinem/rust-cache@v2
+        name: setup cache
+        with:
+          prefix-key: "${{ matrix.target }}-${{ hashFiles('Cargo.toml') }}"
 
       - name: Run Cross
         if: ${{ matrix.cross}}
