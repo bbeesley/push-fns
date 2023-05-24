@@ -139,7 +139,7 @@ jobs:
         run: npm ci
       - name: publish
         env:
-          GH_TOKEN: ${{ secrets.GH_PA_TOKEN }}
+          GH_TOKEN: ${{ secrets.MY_PA_TOKEN }}
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
           npm run release
