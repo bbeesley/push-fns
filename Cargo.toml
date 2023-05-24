@@ -24,6 +24,8 @@ google-cloud-storage = { version = "0.11.0", features = [
   "trace",
   "rustls-tls",
 ] }
+openssl = { version = "0.10.52", features = ["vendored"] }
+openssl-sys = { version = "0.9.87", features = ["vendored"] }
 tokio = { version = "1.28.0", features = ["full"] }
 zip = "0.6.4"
 
