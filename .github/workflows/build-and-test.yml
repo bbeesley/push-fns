@@ -64,6 +64,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        rust_channel:
+          - stable
+          - nightly
+          - beta
     runs-on: ${{ matrix.os }}
     env:
       RUST_BACKTRACE: 1
@@ -76,7 +80,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable
+          toolchain:  ${{ matrix.rust_channel }}
           override: true
       - uses: swatinem/rust-cache@v2
         name: setup cache
