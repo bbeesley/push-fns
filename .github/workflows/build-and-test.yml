@@ -25,7 +25,6 @@ jobs:
       - uses: swatinem/rust-cache@v2
         name: setup cache
         with:
-          cache-targets: "false"
           prefix-key: "${{ hashFiles('Cargo.toml') }}"
       - name: run cargo check
         uses: actions-rs/cargo@v1
@@ -48,7 +47,6 @@ jobs:
       - uses: swatinem/rust-cache@v2
         name: setup cache
         with:
-          cache-targets: "false"
           prefix-key: "${{ hashFiles('Cargo.toml') }}"
       - name: run cargo fmt
         uses: actions-rs/cargo@v1
@@ -83,7 +81,6 @@ jobs:
       - uses: swatinem/rust-cache@v2
         name: setup cache
         with:
-          cache-targets: "false"
           prefix-key: "${{ matrix.os }}-${{ hashFiles('Cargo.toml') }}"
       - name: aws
         uses: aws-actions/configure-aws-credentials@v2
@@ -137,12 +134,12 @@ jobs:
       - uses: swatinem/rust-cache@v2
         name: setup cache
         with:
-          cache-targets: "false"
           prefix-key: "${{ hashFiles('Cargo.toml') }}"
       - name: npm install
         run: npm ci
       - name: publish
         env:
           GH_TOKEN: ${{ secrets.GH_PA_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
           npm run release
