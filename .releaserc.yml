@@ -10,6 +10,7 @@ plugins:
         - "package.json"
         - "CHANGELOG.md"
         - "README.md"
+        - "Cargo.toml"
       "message": "chore(release): ${nextRelease.version} 🚀 [skip ci]\n\n${nextRelease.notes}"
   - - "semantic-release-cargo"
     - "allFeatures": true
