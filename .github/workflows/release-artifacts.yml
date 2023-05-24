@@ -62,7 +62,8 @@ jobs:
       - uses: swatinem/rust-cache@v2
         name: setup cache
         with:
-          prefix-key: "${{ matrix.target }}-${{ hashFiles('Cargo.toml') }}"
+          prefix-key: "${{ hashFiles('Cargo.lock') }}"
+          cache-targets: "false"
 
       - name: Run Cross
         if: ${{ matrix.cross}}
