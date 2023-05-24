@@ -60,7 +60,7 @@ jobs:
         directory=push-fns-${{ matrix.target }}
         mkdir $directory
         # misc
-        cp README.md LICENSE NOTICE $directory
+        cp README.md LICENSE $directory
         # man page
         mkdir -p $directory/man
         mv target/${{ matrix.target }}/release/build/push-fns*/out/push-fns.1 $directory/man/
