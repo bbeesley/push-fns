@@ -87,7 +87,7 @@ jobs:
           mv target/${{ matrix.target }}/release/build/push-fns*/out/push-fns.1 $directory/man/
           # completion
           mkdir -p $directory/completion
-          cp target/${{ matrix.target }}/release/build/push-fns*/out/*${NAME}* build/completion/
+          cp target/${{ matrix.target }}/release/build/push-fns*/out/*${NAME}* $directory/completion/
           if [ -f target/${{ matrix.target }}/release/push-fns.exe ]; then
             cp target/${{ matrix.target }}/release/push-fns.exe $directory
             7z a -r $directory.zip $directory
