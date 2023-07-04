@@ -20,7 +20,7 @@ google-cloud-default = { version = "0.2.0", features = [
   "storage",
   "rustls-tls",
 ] }
-google-cloud-storage = { version = "0.11.0", features = [
+google-cloud-storage = { version = "0.12.0", features = [
   "trace",
   "rustls-tls",
 ] }
