@@ -12,7 +12,7 @@ homepage = "https://github.com/bbeesley/push-fns"
 repository = "https://github.com/bbeesley/push-fns"
 
 [dependencies]
-aws-config = "0.55.1"
+aws-config = "0.56.0"
 aws-sdk-s3 = "0.26.0"
 clap = { version = "4.2.5", features = ["derive"] }
 glob = "0.3.1"
